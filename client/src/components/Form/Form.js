@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import useStyles from './style'
 import FileBase from 'react-file-base64'
 import { TextField, Button, Typography, Paper } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { createPost } from '../../actions/posts'
 
 const Form = () => {
   const classes = useStyles()
+  const dispatch = useDispatch();
 
   const [postData, setPostData] = useState({
     creator: '',
@@ -14,8 +17,10 @@ const Form = () => {
     selectedFile: ''
   })
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+     e.preventDefault();
 
+     dispatch(createPost(postData))
   }
 
   const clear = () => {
@@ -28,6 +33,7 @@ const Form = () => {
         <Typography variant='h6'>Creating a Memory</Typography>
         <TextField
           name='creator'
+          className={classes.fileInput}
           variant='outlined'
           label='Creater'
           fullWidth
@@ -36,6 +42,7 @@ const Form = () => {
         />
         <TextField
           name='title'
+          className={classes.fileInput}
           variant='outlined'
           label='Title'
           fullWidth
@@ -44,6 +51,7 @@ const Form = () => {
         />
         <TextField
           name='message'
+          className={classes.fileInput}
           variant='outlined'
           label='Message'
           fullWidth
@@ -52,6 +60,7 @@ const Form = () => {
         />
         <TextField
           name='tags'
+          className={classes.fileInput}
           variant='outlined'
           label='Tags'
           fullWidth
