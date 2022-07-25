@@ -15,11 +15,16 @@ const Post = ({ post, setCurrentId }) => {
   const userId = user?.result.googleId || user?.result?._id;
   const dispatch = useDispatch();
 
+  console.log("====post???", post?.creator);
+
+  console.log("==== user ++++???", user?.result?._id);
+
+
   const Likes = () => {
     if (likes.length > 0) {
       return likes.find((like) => like === userId)
         ? (
-          <><ThumbUpAltIcon fontSize="small" />&nbsp;{likes.length > 2 ? `You and ${likes.length - 1} others` : `${likes.length} like${likes.length > 1 ? 's' : ''}` }</>
+          <><ThumbUpAltIcon fontSize="small" />&nbsp;{likes.length > 2 ? `You and ${likes.length - 1} others` : `${likes.length} like${likes.length > 1 ? 's' : ''}`}</>
         ) : (
           <><ThumbUpAltOutlined fontSize="small" />&nbsp;{likes.length} {likes.length === 1 ? 'Like' : 'Likes'}</>
         );
@@ -36,11 +41,13 @@ const Post = ({ post, setCurrentId }) => {
         <Typography variant='h6'>{post.name}</Typography>
         <Typography variant='body2'>{moment(post.createdAt).fromNow()}</Typography>
       </div>
-      <div className={classes.overlay2}>
-        <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}>
-          <MoreHorizIcon fontSize='default' />
-        </Button>
-      </div>
+      {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
+        <div className={classes.overlay2}>
+          <Button style={{ color: 'white' }} size="small" onClick={() => setCurrentId(post._id)}>
+            <MoreHorizIcon fontSize='default' />
+          </Button>
+        </div>
+      )}
       <div className={classes.details}>
         <Typography variant='body2' color="textSecondary">{post.tags.map((tag) => `#${tag}`)}</Typography>
       </div>
@@ -50,12 +57,15 @@ const Post = ({ post, setCurrentId }) => {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
-          <Likes/>
+          <Likes />
         </Button>
-        <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
-          <DeleteIcon fontSize='small' />
-          Delete
-        </Button>
+        {(user?.result?.googleId === post?.creator || user?.result?._id == post?.creator) && (
+          <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
+            <DeleteIcon fontSize='small' />
+            Delete
+          </Button>
+        )}
+
       </CardActions>
     </Card>
   )
