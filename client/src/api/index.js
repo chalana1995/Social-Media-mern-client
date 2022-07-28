@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API = axios.create({baseURL: 'http://localhost:5000'})
+const API = axios.create({ baseURL: 'http://localhost:5000' })
 
 
 API.interceptors.request.use((req) => {
-    if(localStorage.getItem('profile')) {
+    if (localStorage.getItem('profile')) {
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
     }
 
@@ -12,7 +12,7 @@ API.interceptors.request.use((req) => {
 })
 
 
-export  const fetchPosts = () => API.get('/posts')
+export const fetchPosts = (page) => API.get(`/posts?page=${page}`)
 export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`)
 export const createPost = (newPost) => API.post('/posts', newPost)
 export const updatepost = (id, postData) => API.patch(`/posts/${id}`, postData)
