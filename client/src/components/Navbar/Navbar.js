@@ -48,7 +48,7 @@ const Navbar = () => {
                 <img className={classes.image} src={memoriesLogo} alt='memories' height="60" />
             </Link>
             <Toolbar className={classes.toolbar}>
-                {user ? (
+                {user?.result ? (
                     <div className={classes.profile}>
                         <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl}>
                             {user.result.name.charAt(0)}
